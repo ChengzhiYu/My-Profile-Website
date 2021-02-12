@@ -1,3 +1,5 @@
+{% load static %}
+
 <!DOCTYPE html>
 <html>
 <head>
@@ -8,7 +10,7 @@
 	<link href="https://fonts.googleapis.com/css2?family=Literata:wght@200;700&family=Trispace:wght@700&display=swap" rel="stylesheet">
 	<link href="https://fonts.googleapis.com/css2?family=Josefin+Sans:wght@500&display=swap" rel="stylesheet">
 
-	<link rel="stylesheet" type="text/css" href="default.css">
+	<link rel="stylesheet" type="text/css" href="{% static '/css/defaults.css' %}">
 	<link id="theme-style" rel="stylesheet" type="text/css" href="">
 
 </head>
@@ -35,7 +37,7 @@
 				</div>
 
 				<div class="left-column" >
-					<img id="profile_pic" src="images/chengzhi.jpeg">
+					<img id="profile_pic" src="{% static 'images/chengzhi.jpeg'%}">
 					<h5 style="text-align: center; line-height: 0;">Personalize Theme
 					</h5>
 
@@ -85,7 +87,7 @@
 				<hr>
 
 				<h4>Top Expertise</h4>
-				<p>Working with Django, good at Java <a target="_blank" href="Chengzhi.pdf">Download Resume</a></p>
+				<p>Working with Django, good at Java <a target="_blank" href="{% static 'Chengzhi.pdf' %}">Download Resume</a></p>
 
 				<div id="skills">
 					<ul>
@@ -121,7 +123,7 @@
 			<div class="post-wrapper">
 
 				<div class="post">
-					<img class="thumbnail" src="images/Cat03.jpg">
+					<img class="thumbnail" src="{% static 'images/Cat03.jpg' %}">
 					<div class="post-preview">
 						<h6 class="post-title">Post Title</h6>
 						<p class="post-intro">This is a sentence. Need to be changed latter.</p>
@@ -130,7 +132,7 @@
 				</div>
 
 				<div class="post">
-					<img class="thumbnail" src="images/dog.jpg">
+					<img class="thumbnail" src="{% static 'images/dog.jpg' %}">
 					<div class="post-preview">
 						<h6 class="post-title">Post Title</h6>
 						<p class="post-intro">This is a sentence. Need to be changed latter.</p>
@@ -138,7 +140,7 @@
 					</div>
 				</div>
 				<div class="post">
-					<img class="thumbnail" src="images/sunflower.jpg">
+					<img class="thumbnail" src="{% static 'images/sunflower.jpg' %}">
 					<div class="post-preview">
 						<h6 class="post-title">Post Title</h6>
 						<p class="post-intro">This is a sentence. Need to be changed latter.</p>
@@ -153,7 +155,12 @@
 	<section class="s2"> 
 		<div class="main-container">
 			<h3 style="text-align: center;">Get in touch</h3>
-			<form id=contact-form>
+			<form method="post" id=contact-form>
+<!--				{% csrf_token %}-->
+<!--				{{formset.management_form}}-->
+<!--				{%for form in formset%}-->
+<!--				{{form}}-->
+<!--				{%endfor%}-->
 				<label>Name</label>
 				<input class="input-field" type="text" name="name">
 
@@ -171,6 +178,42 @@
 		</div>
 	</section>
 
-	<script type="text/javascript" src="script.js"></script>
+	<script>
+		console.log("inline JS is working")
+
+		let theme = localStorage.getItem('themeColor')
+
+		if(theme == null){
+			setTheme("light")
+		}else{
+			setTheme(theme)
+		}
+		let themeDots = document.getElementsByClassName("theme-dot")
+
+		for(var i=0; themeDots.length > i; i++){
+			themeDots[i].addEventListener("click", function(){
+				let mode = this.dataset.mode
+				console.log('option ' + mode + ' clicked')
+				setTheme(mode)
+			})
+		}
+
+		function setTheme(mode){
+			if(mode == 'light'){
+				document.getElementById('theme-style').href = "{% static '/css/default.css' %}"
+			}
+			if(mode == 'blue'){
+				document.getElementById('theme-style').href = "{% static '/css/blue.css' %}"
+			}
+			if(mode == 'green'){
+				document.getElementById('theme-style').href = "{% static '/css/green.css' %}"
+			}
+			if(mode == 'purple'){
+				document.getElementById('theme-style').href = "{% static '/css/purple.css' %}"
+			}
+
+			localStorage.setItem('themeColor', mode)
+		}
+</script>
 </body>
 </html>

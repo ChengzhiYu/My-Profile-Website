@@ -1,18 +1,15 @@
 from django.shortcuts import render
-from django.http import HttpResponse
+from django.forms import modelformset_factory
+from base.models import Contact
 
 
 def home(request):
-    return HttpResponse('<h2>Home</h2>')
+    ContactFormSet = modelformset_factory(Contact, fields='__all__')
+    if request.method =="POST":
+        formset = ContactFormSet(request.POST, request.FILES)
+        if formset.is_valid():
+            formset.save()
+    else:
+        formset = ContactFormSet()
+    return render(request, 'base/index.html', {'formset': formset})
 
-
-def posts(request):
-    return HttpResponse('<h2>Posts</h2>')
-
-
-def post(request):
-    return HttpResponse('<h2>Post Title</h2>')
-
-
-def profile(request):
-    return HttpResponse('<h2>User Profile</h2>')
